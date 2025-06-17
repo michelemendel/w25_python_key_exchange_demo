@@ -17,15 +17,16 @@ pub_key_str = "public key"
 pri_key_str = "private key"
 shared_key_str = "shared key"
 
-def execute_key_exchange():
-    print("\nThis script demonstrates a key exchange between two parties, Alice and Bob. It is based on the Diffie-Hellman key exchange algorithm, which is a public key cryptography algorithm. The purpose is to establish a shared secret key between the two parties without exchanging any secrets.")
+def run_demo():
+    print("\nThis script demonstrates a key exchange between two parties, Alice and Bob. It is based on the classical Diffie-Hellman key exchange algorithm, which is a public key cryptography algorithm. The purpose is to establish a shared secret key between the two parties without exchanging any secrets.")
     print("\nThe two main calculations are:")
     print("  1. A function to generate large prime numbers")
     print("  2. ((a^b) mod c) for asymmetric encryption")
     print(f"\nNote: To speed things up we use smaller key sizes ({default_bit_size} bits) instead of full 2048-bit primes.")
-    input("\nPress Enter to continue to Step 1...")
+    input("\nPress Enter to continue...")
 
-    print("\nStep 1\nBoth parties agree on public parameters.")
+    print("\n----- Step 1 -----")
+    print("Both parties agree on public parameters.")
     print("The prime modulus and generator are public parameters, i.e. they are not secrets.")
     print("The prime modulus is a large prime number.")
     print("The generator can be a small integer (often 2 or 5), and its size does not impact security as much as the size and properties of the prime modulus.")
@@ -33,47 +34,54 @@ def execute_key_exchange():
     print(f"Calculate prime modulus: {prime_modulus}")
     generator = 5
     print(f"Select generator: {generator}")
-    input("\nPress Enter to continue to Step 2...")
+    input("\nPress Enter to continue...")
 
-    print("\nStep 2\nEach party generates a private key - a large prime - using the same function as used for the prime modulus in the previous step.")
+    print("\n----- Step 2 -----")
+    print("Each party generates a private key - a large prime - using the same function as used for the prime modulus in the previous step.")
     print("The private keys are secrets!")
     alice_pri_key = calc_prime()
     print(f"{alices} {pri_key_str}: {alice_pri_key}")
     bob_pri_key = calc_prime()
     print(f"{bobs} {pri_key_str}: {bob_pri_key}")
-    input("\nPress Enter to continue to Step 3...")
+    input("\nPress Enter to continue...")
 
-    print("\nStep 3\nEach party computes their public key - (generator^priv_key mod prime_modulus).")
+    print("\n----- Step 3 -----")
+    print("Each party computes their public key - (generator^priv_key mod prime_modulus).")
     alice_pub_key = calc_key(generator, alice_pri_key, prime_modulus)
     print(f"{alices} {pub_key_str}: {alice_pub_key}")
     bob_pub_key = calc_key(generator, bob_pri_key, prime_modulus)
     print(f"{bobs} {pub_key_str}: {bob_pub_key}")
-    input("\nPress Enter to continue to Step 4...")
+    input("\nPress Enter to continue...")
 
-    print("\nStep 4\nAfter each party has exchanged their public keys, they compute the shared secret key - (other_party_pub_key^priv_key mod prime_modulus)")
+    print("\n----- Step 4 -----")
+    print("After each party has exchanged their public keys, they compute the shared secret key - (other_party_pub_key^priv_key mod prime_modulus)")
     alice_shared_key = calc_key(bob_pub_key, alice_pri_key, prime_modulus)
     print(f"{alices} {shared_key_str}: {alice_shared_key}")
     bob_shared_key = calc_key(alice_pub_key, bob_pri_key, prime_modulus)
     print(f"{bobs} {shared_key_str}: {bob_shared_key}")
+    input("\nPress Enter to continue...")
 
-    print("\nCheck if the shared keys are the same")
+    print("\n----- Step 5 -----")
+    print("Check if the shared keys are the same")
     if alice_shared_key == bob_shared_key:
         print(f"Shared keys match: {alice_shared_key}")
     else:
         print(f"Shared keys do not match: {alice_shared_key} != {bob_shared_key}")
-    input("\nPress Enter to continue to Step 5...")
+    input("\nPress Enter to continue...")
 
-    print("\nStep 5\nAlice uses the shared secret key to encrypt and send a message to Bob")
+    print("\n----- Step 6 -----")
+    print("Alice uses the shared secret key to encrypt and send a message to Bob")
     message = "Hello, world!"
     print(f"{alices} message: {message}")
     encrypted_message = encrypt_message(message, alice_shared_key)
     print(f"Encrypted message: {encrypted_message}")
-    input("\nPress Enter to continue to Step 6...")
+    input("\nPress Enter to continue...")
     
-    print(f"\nStep 6\nBob receives the message, and decrypts it using his shared secret key")
+    print("\n----- Step 7 -----")
+    print(f"Bob receives the message, and decrypts it using his shared secret key")
     decrypted_message = decrypt_message(encrypted_message, bob_shared_key)
     print(f"Bob reads the decrypted message: {decrypted_message}")
-    input("\nPress Enter to continue to finish...")
+    input("\nPress Enter to finish...")
 
     print("\nNote that during the whole process, no secrets were exchanged.\n")
 
@@ -96,7 +104,11 @@ def generate_private_key(bits=default_bit_size):
     return secrets.randbits(bits)
 
 def derive_aes_key(shared_key):
-    """Derive a 256-bit AES key from the shared key using HKDF"""
+    """Derive a 256-bit AES key from the shared key using HKDF.
+    HKDF (HMAC-based Extract-and-Expand Key Derivation Function) is a key derivation function
+    that takes a shared secret and expands it into a larger, cryptographically secure key,
+    such as a 256-bit AES key.
+    """
     # Convert shared key to bytes
     shared_key_bytes = str(shared_key).encode()
     
@@ -167,4 +179,4 @@ def decrypt_message(encrypted_message, shared_key):
     # Convert back to string
     return data.decode()
 
-execute_key_exchange()
+run_demo()

@@ -21,10 +21,10 @@ flowchart TB
 
 ## Explanation of Terms
 
-**Frequency analysis:**>
+**Frequency analysis:**
 A cryptanalysis technique that studies the frequency of letters or groups of letters in a ciphertext. It exploits the fact that, in any given language, certain letters and combinations appear with predictable frequencies, making simple substitution ciphers vulnerable.
 
-**No forward secrecy:**>
+**No forward secrecy:**
 A property of some encryption schemes where, if the long-term private key is compromised, all past communications encrypted with that key can also be decrypted. Forward secrecy prevents this by generating unique session keys for each communication session.
 
 **MITM (Man-in-the-Middle):**

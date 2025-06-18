@@ -1,5 +1,11 @@
 # Diffie-Hellman Key Exchange Sequence
 
+<!-- <p style="font-size:1.5em;"><b>s = g<sup>ab</sup> mod p</b></p> -->
+
+$$s = g^{ab}\mod p$$
+
+---
+
 ```mermaid
 sequenceDiagram
     participant Alice

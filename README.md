@@ -41,9 +41,9 @@ The program will guide you through each step of the key exchange process, waitin
 
 ## Run presentation
 
-To run the presentation using Slidev:
-
 For installation instructions, see the [Slidev documentation](https://sli.dev/guide/getting-started.html).
+
+To run the presentation using Slidev:
 
 ```bash
 slidev presentation/slides.md

@@ -51,6 +51,10 @@ slidev presentation/slides.md
 
 ## Technology used
 
+### Dev
+
+- Cursor IDE
+
 ### Python Program
 
 - **Python 3.8+** - Main programming language for the cryptographic implementation

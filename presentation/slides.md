@@ -15,6 +15,8 @@ fonts:
 
 # Diffie-Hellman
 
+The Secret Handshake of the Internet
+
 ---
 src: ./pages/page1.md
 ---

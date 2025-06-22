@@ -2,7 +2,7 @@
 
 import os
 from diffie_hellman import calc_prime, calc_key, generate_private_key
-from aes_crypto import encrypt_message, decrypt_message
+from aes_crypto import encrypt_message, decrypt_message, SessionKey
 
 # Constants for display
 alices = "Alice's"
@@ -75,16 +75,24 @@ def run_demo():
     wait_for_enter()
 
     print_step(5)
+    print("Each party derives their AES-256 key from the shared secret using HKDF (HMAC-based Extract-and-Expand Key Derivation Function).\nThis key will be used for symmetric encryption.")
+    alice_session = SessionKey(alice_shared_key)
+    bob_session = SessionKey(bob_shared_key)
+    print(f"\n{alices} derived AES key (hex): {alice_session.aes_key.hex()}")
+    print(f"{bobs} derived AES key (hex):   {bob_session.aes_key.hex()}")
+    wait_for_enter()
+
+    print_step(6)
     print("Alice uses the shared secret key to encrypt and send a message to Bob")
     message = "Hello, world!"
     print(f"\n{alices} message:   {message}")
-    encrypted_message = encrypt_message(message, alice_shared_key)
+    encrypted_message = alice_session.encrypt_message(message)
     print(f"Encrypted message: {encrypted_message}")
     wait_for_enter()
     
-    print_step(6)
+    print_step(7)
     print(f"Bob receives the message, and decrypts it using his shared secret key")
-    decrypted_message = decrypt_message(encrypted_message, bob_shared_key)
+    decrypted_message = bob_session.decrypt_message(encrypted_message)
     print(f"\nBob reads the decrypted message: {decrypted_message}")
     input("\nPress Enter to finish...\n\n")
 
